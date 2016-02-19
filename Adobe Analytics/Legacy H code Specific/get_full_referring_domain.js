@@ -1,0 +1,2 @@
+// Get Full Referring Domains  
+    s.getFullReferringDomains = new Function("var s=this,dr=window.document.referrer,n=s.linkInternalFilters.split(',');if(dr){var r=dr.split('/')[2],l=n.length;for(i=0;i<=l;i++){if(r.indexOf(n[i])!=-1){r='';i=l+1;}}return r}");
