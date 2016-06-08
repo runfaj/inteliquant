@@ -31,16 +31,24 @@ var params = [];
 var qp_start = "?";
 var qp_delim = "&";
 var qp_equals = "=";
-for(var key in staticMappings) {
+var gv = function(a, b, c) {
+    b = {};
+    for (c in a) {
+        if (a.hasOwnProperty(c) && typeof a[c] != "function")
+            b[c] = a[c];
+    }
+    return b
+};
+for(var key in gv(staticMappings)) {
   params.push([key,staticMappings[key]].join(qp_equals));
 }
-for(var key in dynamicMappings) {
+for(var key in gv(dynamicMappings)) {
   if(_satellite.getVar(dynamicMappings[key]))
     params.push([key,_satellite.getVar(dynamicMappings[key])].join(qp_equals));
 }
 src += qp_start + params.join(qp_delim);
 
-if(initializeOnce && document.getElementById(pixelID) != null) {
+if(initializeOnce && document.getElementById(pixelID) !== null) {
   callback();
 } else {
   pixelLoader({
