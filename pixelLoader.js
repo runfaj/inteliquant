@@ -5,7 +5,7 @@
  * type - Optional. img, iframe, or script. Defaults to script if omitted.
  * src  - Required. the url that you want to load
  * id   - Optional. an id to give to the added element
- * location - Optional. script or head. Defaults to head. If head, appends to document head. If script, does the insertBefore the last script. An "image" type of request appends to the body regardless.
+ * location - Optional. script, body, or head. Defaults to head. If script, does the insertBefore the last script. An "image" type of request appends to the body always. Any other value (e.g. head or body) will append to that tag name child.
  * cb   - Optional. A callback to run on load of the resulting response.
  * log  - Optional. A function for you to add logging. This will be called and passed with a message.
  *
