@@ -51,10 +51,13 @@ src += qp_start + params.join(qp_delim);
 if(initializeOnce && document.getElementById(pixelID) !== null) {
   callback();
 } else {
-  pixelLoader({
+  var obj = {
     "type": type,
     "src": src,
     "log": function(msg){ _satellite.notify(msg,1); },
     "cb": callback
-  });
+  };
+  if(typeof pixelID != "undefined" && pixelID)
+    obj["id"] = pixelID;
+  pixelLoader(obj);
 }
