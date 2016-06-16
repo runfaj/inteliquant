@@ -3,6 +3,11 @@
 //-------------------------------//
 //-- read all notes for config --//
 //-------------------------------//
+/* This is a generic iframe, img, or script source request.
+ * All configs are meant for building and firing a single url
+ * request. Any custom code on top of that should be added
+ * into the marked code section.
+ */
 
 /**** configuration section ****/
   var src = "";  //base url, without query string. Omit the "http:" part if needed to match parent domain protocol
