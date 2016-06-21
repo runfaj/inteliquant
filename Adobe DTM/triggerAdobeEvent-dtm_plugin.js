@@ -29,8 +29,8 @@
  *      triggerAdobeEvent("event30", "customerName", "Bob");
  * Trigger event when dtm variable equals:
  *      triggerAdobeEvent("event30", "customerName", "Bob", true);
- * Trigger event with serialized value:
- *      triggerAdobeEvent("event30", "customerName", "Bob", "123456");
+ * Trigger event with specific value:
+ *      triggerAdobeEvent("event30", "customerName", "", "123456");
  **/
 s.triggerAdobeEvent = new Function('eventNumber', 'dataElement',
     'triggerValue', 'option', 'var s = this; function optIsTrue()'
