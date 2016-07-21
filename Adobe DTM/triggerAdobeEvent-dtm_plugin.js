@@ -16,6 +16,8 @@
  * triggerValue: Optional. The value to look at in the dtm variable.
  * option: Optional. "true" to do an exact match. Otherwise, provided
  *      value is used as serialization value.
+ * optionDelim: Optional. Used if you want the serialization value to
+ *      be delimited by something other than an equals "=1234"
  *
  * Returns:
  * Boolean: true if event added successfully, false otherwise.
@@ -33,12 +35,12 @@
  *      triggerAdobeEvent("event30", "customerName", "", "123456");
  **/
 s.triggerAdobeEvent = new Function('eventNumber', 'dataElement',
-    'triggerValue', 'option', 'var s = this; function optIsTrue()'
+    'triggerValue', 'option', 'optionDelim', 'var s = this; function optIsTrue()'
     +'{return !(option && option !== true && (typeof option=='
     +'"string" && option.toLowerCase() !== "true"));}function apl'
     +'(list, value, optserialize) {if(!list || list == "") list ='
     +'value; else list = list += "," + value; if(optserialize && '
-    +'!optIsTrue()) list += optserialize; return list;}if('
+    +'!optIsTrue()) list += (optionDelim ? optionDelim : "=") + optserialize; return list;}if('
     +'!eventNumber) {_satellite.notify("Event Number not specified'
     +' in triggerEvent",1); return false;} eventNumber = '
     +'eventNumber.toString().trim().toLowerCase(); if(eventNumber.'
@@ -59,7 +61,7 @@ s.triggerAdobeEvent = new Function('eventNumber', 'dataElement',
 
 
 
-function triggerAdobeEvent(eventNumber, dataElement, triggerValue, option) {
+function triggerAdobeEvent(eventNumber, dataElement, triggerValue, option, optionDelim) {
     var s = this;
     function optIsTrue() {
         return !(option && option !== true && (typeof option == "string" && option.toLowerCase() !== "true"));
@@ -67,7 +69,7 @@ function triggerAdobeEvent(eventNumber, dataElement, triggerValue, option) {
     function apl(list, value, optserialize) {
         if(!list || list == "") list = value;
         else list = list += "," + value;
-        if(optserialize && !optIsTrue()) list += optserialize;
+        if(optserialize && !optIsTrue()) list += (optionDelim ? optionDelim : "=") + optserialize;
         return list;
     }
     if(!eventNumber) {
