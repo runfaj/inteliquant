@@ -1,5 +1,6 @@
 /* Utility Function to help load urls as an img, iframe, or function,
- * then optionally do a callback after the fact.
+ * then optionally do a callback after the fact. Used for tracking pixels
+ * that don't actually display anything from the request directly.
  *
  * Accepts one argument as an object with the following params:
  * type - Optional. img, iframe, or script. Defaults to script if omitted.
@@ -20,7 +21,7 @@ window.pixelLoader = function(o) {
             if (a.hasOwnProperty(c) && typeof a[c] != "function")
                 b[c] = a[c];
         }
-        return b
+        return b;
     };
 
     var b, c, l, a = document;
@@ -44,6 +45,7 @@ window.pixelLoader = function(o) {
             b.onload = o.cb;
         }
         b.src = o.src;
+        b.style.display = 'none';
     } else {
         b = a.createElement("script");
         b.language = "javascript";
@@ -54,20 +56,21 @@ window.pixelLoader = function(o) {
             b[l] = o.attrs[l];
         }
         b.src = o.src;
+        b.style.display = 'none';
     }
     if (o.id) {
-        b.id = o.id
-    };
+        b.id = o.id;
+    }
     if (typeof o.cb == "function" && o.type != 'img') {
         if (b.addEventListener) {
             b.addEventListener("load", function() {
-                o.cb()
+                o.cb();
             }, false);
         } else { /* old IE support */
             b.onreadystatechange = function() {
                 if (this.readyState == 'complete' || this.readyState == 'loaded') {
                     this.onreadystatechange = null;
-                    o.cb()
+                    o.cb();
                 }
             };
         }
@@ -82,7 +85,7 @@ window.pixelLoader = function(o) {
         if (l == "script") {
             c.parentNode.insertBefore(b, c);
         } else {
-            c.appendChild(b)
+            c.appendChild(b);
         }
     }
 };
