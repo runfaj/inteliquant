@@ -1,12 +1,12 @@
 //IMPORTANT! Please read.
 //Two versions are provided below. The first is the Adobe plugin.
 //The second version is the expanded version for readability.
-//Only copy/paste lines 8-54 when implementing this plugin.
+//Only copy/paste lines 8-56 when implementing this plugin.
 
 
 
 /**
- * function triggerAdobeEvent
+ * function triggerAdobeEvent  v1.1 - 2016-08-30
  * Used to trigger any Adobe event on various conditions and add the
  * event to the scoped s.events variable.
  *
@@ -60,7 +60,8 @@ s.triggerAdobeEvent = new Function('eventNumber', 'dataElement',
 
 
 
-
+/** source code for above plugin **/
+/*
 function triggerAdobeEvent(eventNumber, dataElement, triggerValue, option, optionDelim) {
     var s = this;
     function optIsTrue() {
@@ -109,3 +110,4 @@ function triggerAdobeEvent(eventNumber, dataElement, triggerValue, option, optio
     }
     return false;
 }
+*/
