@@ -42,9 +42,9 @@ s.triggerAdobeEvent = new Function('eventNumber', 'dataElement',
     +'value; else list = list += "," + value; if(optserialize && '
     +'!optIsTrue()) list += (optionDelim ? optionDelim : "=") + optserialize; return list;}if('
     +'!eventNumber) {_satellite.notify("Event Number not specified'
-    +' in triggerEvent",1); return false;} eventNumber = '
-    +'eventNumber.toString().trim().toLowerCase(); if(eventNumber.'
-    +'indexOf("event")!=0) {if(!isNaN(eventNumber)) {eventNumber ='
+    +' in triggerEvent",1); return false;} var temp = '
+    +'eventNumber.toString().trim().toLowerCase(); if(temp.'
+    +'indexOf("event")!=0) {if(!isNaN(temp)) {eventNumber ='
     +'"event" + eventNumber;}} if(!dataElement) { s.events = '
     +'apl(s.events, eventNumber, option);return true;} else {'
     +'var value = _satellite.getVar(dataElement) || "";if(!trigger'
@@ -76,9 +76,9 @@ function triggerAdobeEvent(eventNumber, dataElement, triggerValue, option, optio
         _satellite.notify("Event Number not specified in triggerEvent",1);
         return false;
     }
-    eventNumber = eventNumber.toString().trim().toLowerCase();
-    if(eventNumber.indexOf("event")!=0) {
-        if(!isNaN(eventNumber)) {
+    var temp = eventNumber.toString().trim().toLowerCase();
+    if(temp.indexOf("event")!=0) {
+        if(!isNaN(temp)) {
             eventNumber = "event" + eventNumber;
         }
     }
