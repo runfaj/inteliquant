@@ -39,6 +39,10 @@
  *     is cylic or recursive in nature. If done, a stack overflow error will
  *     result. This method can be called on any variable like so:
  *         myClonedVar = dtm_clone(myOldVar);
+ *
+ *     In addition, there is a setTimeout at the bottom of this utility to wait
+ *     until the direct call rules have had a chance to initialize. You may choose
+ *     to adjust this value to meet your needs (default is 300 ms).
  */
 
 function dtm_clone(obj) {
@@ -77,8 +81,10 @@ window.dtm_track = function(type,obj,lookAtExisting) {
     if (hasTracked != "NOT ")
       _satellite.track(type);
   
-    window.dtm_layer = window.dtm_clone(temp);
-    delete temp;
+    setTimeout(function(){
+      window.dtm_layer = window.dtm_clone(temp);
+      delete temp;
+    },300);
   } catch (e) {
     if(typeof console != "undefined" && console.log)
         console.log("dtm_track error. Message: ",e.message," Passed obj: ",obj);
