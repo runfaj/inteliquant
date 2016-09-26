@@ -56,7 +56,6 @@ window.pixelLoader = function(o) {
             b[l] = o.attrs[l];
         }
         b.src = o.src;
-        b.style.display = 'none';
     }
     if (o.id) {
         b.id = o.id;

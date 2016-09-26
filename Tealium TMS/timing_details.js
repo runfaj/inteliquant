@@ -1,15 +1,8 @@
-(function (a,b,c,e,g,q,r,t,v,u,k) {
+(function (a,b,c,g,q,r,t,v,u,k) {
     // only do on page loads
     if (a == "view" && typeof performance != "undefined" && typeof performance == "object" && performance.timing) {
         q = utag.loader.SC;
         r = utag.loader.RC;
-        e = function(element, event, fn) {
-            // event listener attaching
-            if (element.addEventListener)
-                element.addEventListener(event, fn, false);
-            else if (element.attachEvent)
-                element.attachEvent('on' + event, fn);
-        }
         g = function(number) {
             // lookup for bucket a number fits in
             if (number < 25) return "0-25ms";
@@ -59,13 +52,14 @@
             }
         }
         
-        // check to see if already loaded
-        if (document.readyState != "complete") {
-            // write values after page has completely loaded
-            e(window, 'load', v);
-        } else {
-            // already loaded, so just set the cookies
-            v();
-        }
+        // check to see if already loaded, else wait
+        (function check(tL){
+            if (tL > 0) {
+                if (typeof performance != "undefined" && typeof performance.timing != "undefined" && typeof performance.timing.loadEventEnd != "undefined" && performance.timing.loadEventEnd != 0)
+                    v();
+                else
+                    setTimeout(function(){check(tL-100)},100);
+            }
+        })(5000);
     }
 })(a,b);

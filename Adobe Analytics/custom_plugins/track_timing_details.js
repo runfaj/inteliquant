@@ -1,51 +1,151 @@
-if pageName or url has semi-colons, this will not work right now
+//NOTE: if pageName or url has semi-colons, this will not work right now
 
-//pn = optional pageName value
-//cn = optional cookieName
-//d = optional cookie delimiter
-//returns an object of previous page url and domComplete time
-//usage for every page:
+/* Usage:
 
-//var td = s.trackTimingDetails();
-//s.propXX = td.url;
-//s.propXX2 = td.domComplete;
+    Use this plugin to track the previous page's time to dom ready
+    as well as the page name it is associated with. There are a few
+    optional parameters you can use:
+        param 1 = manually specify pagename value. If doesn't exist,
+                  defaults to s.pageName, then s.d.URL, then
+                  document.URL
+        param 2 = cookie name, defaults to "s_td"
+        param 3 = cookie delimiter, shouldn't need to be modified ever,
+                  defaults to "??"
+    This plugin returns an object with two values: pageName and
+    domComplete. Sample usage in s.doPlugins might look like so:
 
-//then correlate the 2 props in the report
+        var td = s.trackTimingDetails();
+        s.propXX = td.pageName;
+        s.propXX2 = td.domComplete;
+
+    In the event you have a browser that doesn't utilize the
+    performance.timing browser object, you can also manually
+    specify when the page starts loading. You can do so by
+    putting a global variable at the top of your page like so:
+
+    window.timingDetailStart = new Date();
+
+    The plugin will look at this value first if specified, then
+    attempt to look at performance.timing if not.
+
+*/
+
+s.trackTimingDetails = new Function("a","b","c","try{var d=this;"
+    +"if(b=b||'s_td',a=a||d.pageName||d.d.URL||document.URL,c=c|"
+    +"|'??',window.timingDetailStart||'undefined'!=typeof performance"
+    +"&&'object'==typeof performance&&performance.timing){var e="
+    +"function(a,b,c,d){b=a+'=',c=document.cookie.split(';');for"
+    +"(var e=0;e<c.length;e++){for(d=c[e];' '==d.charAt(0);)d=d."
+    +"substring(1,d.length);if(0==d.indexOf(b))return d.substrin"
+    +"g(b.length,d.length)}return''},f=function(a,b,c){'number'="
+    +"=typeof c&&(c=new Date(c)),document.cookie=a+'='+b+';path="
+    +"/;domain='+location.hostname+';expires='+(c?c.toGMTString("
+    +"):'')},g=function(a){return a<25?'0-25ms':a<50?'25-50ms':a"
+    +"<100?'50-100ms':a<150?'100-150ms':a<250?'150-250ms':a<500?"
+    +"'250-500ms':a<750?'500-750ms':a<1e3?'750ms-1s':a<1500?'1-1"
+    +".5s':a<2e3?'1.5-2s':a<3e3?'2-3s':'>3s'},h=function(){if(f|"
+    +"|(f=function(a,b,c){'number'==typeof c&&(c=new Date(c)),do"
+    +"cument.cookie=a+'='+b+';path=/;domain='+location.hostname+"
+    +"';expires='+(c?c.toGMTString():'')}),performance&&performa"
+    +"nce.timing){t=performance.timing;var d=a+c;d+=t.domComplet"
+    +"e-t.navigationStart,f(b,d,3e4)}else console.log('timing st"
+    +"ats not available')},i=e(b);if(i)return{pageName:i.split(c"
+    +")[0],domComplete:g(parseInt(i.split(c)[1]))};if(window.timingDe"
+    +"tailStart){var j=a+c;j+=(new Date).valueOf()-window.timingDetai"
+    +"lStart.valueOf(),f(b,j,3e4)}else!function a(b){b>0&&('unde"
+    +"fined'!=typeof performance&&'undefined'!=typeof performanc"
+    +"e.timing&&'undefined'!=typeof performance.timing.loadEvent"
+    +"End&&0!=performance.timing.loadEventEnd?h():setTimeout(fun"
+    +"ction(){a(b-100)},100))}(5e3)}}catch(a){}");
 
 
 
-s.apl=new Function("L","v","d","u",""
-+"var s=this,m=0;if(!L)L='';if(u){var i,n,a=s.split(L,d);for(i=0;i<a."
-+"length;i++){n=a[i];m=m||(u==1?(n==v):(n.toLowerCase()==v.toLowerCas"
-+"e()));}}if(!m)L=L?L+d+v:v;return L");
 
-s.split=new Function("l","d",""
-+"var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
-+"++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
-
-s.trackTimingDetails = new Function('pn', 'cn', 'd', ""
-+"var s=this;var n,o,i,a,r,m,c,l,dt=d||'??',e=cn||'s_td"
-+"',p=pn||s.pageName||s.d.URL||document.URL,r=function"
-+"(e,t,n,o){t=e+'=',n=s.d.cookie.split(';');for(var i="
-+"0;i<n.length;i++){for(o=n[i];' '==o.charAt(0);)o=o.s"
-+"ubstring(1,o.length);if (0==o.indexOf(t))return o.su"
-+"bstring(t.length,o.length)}return ''},a=function(e,t"
-+",n) {'number'==typeof n&&(n=new Date(n)),s.d.cookie="
-+"e+'='+t+';path=/;domain='+location.hostname+';expire"
-+"s='+(n?n.toGMTString():'')},o=function(e,t,n){e.addE"
-+"ventListener?e.addEventListener(t,n,!1):e.attachEven"
-+"t&&e.attachEvent('on'+t,n)},i=function(e){return 25>"
-+"e?'0-25ms':50>e?'25-50ms':100>e?'50-100ms':150>e?'10"
-+"0-150ms':250>e?'150-250ms':500>e?'250-500ms':750>e?'"
-+"500-750ms':1e3>e?'750ms-1s':1500>e?'1-1.5s':2e3>e?'1"
-+".5-2s':3e3>e?'2-3s':'>3s'},c=function(){if(a||(a=fun"
-+"ction(e,t,n){'number'==typeof n&&(n=new Date(n)),s.d"
-+".cookie=e+'='+t+';path=/;domain='+location.hostname+"
-+"';expires='+(n?n.toGMTString():'')}),e||(e='s_td'),p"
-+"erformance&&performance.timing){m=performance.timing"
-+";var t=p+dt;t+=m.domComplete-m.navigationStart,t+=a(e"
-+",t)}else 'undefined'!=typeof console&&console.log&&c"
-+"onsole.log('Timing object not available.')};return ("
-+"l=r(e))&&(n={},n.url=l.split(dt)[0],n.domComplete=i(l"
-+".split(dt)[1])),'complete'!=s.d.readyState?o(window,'"
-+"load',c):c(),n||''");
+/*********************** source code for reference ******************/
+s.trackTimingDetails = function (pn,cn,d) {
+    try {
+        var s = this;
+        cn = cn || 's_td';
+        pn = pn || s.pageName || s.d.URL || document.URL;
+        d = d || '??';
+        if (window.timingDetailStart || (typeof performance != "undefined" && typeof performance == "object" && performance.timing)) {
+            var r = function (w, x, y, z) {
+                // read cookie (name)
+                x = w + "=";
+                y = document.cookie.split(';');
+                for (var i = 0; i < y.length; i++) {
+                    z = y[i];
+                    while (z.charAt(0) == ' ')
+                        z = z.substring(1, z.length);
+                    if (z.indexOf(x) == 0)
+                        return z.substring(x.length, z.length);
+                }
+                return "";
+            };
+            var q = function (x, y, z) {
+                // set cookie (name, value, expires)
+                if (typeof z == "number") z = new Date(z);
+                document.cookie = x + "=" + y + ";path=/;domain=" + location.hostname + ";expires=" + (z?z.toGMTString():"");
+            };
+            var g = function(number) {
+                // lookup for bucket a number fits in
+                if (number < 25) return "0-25ms";
+                if (number < 50) return "25-50ms";
+                if (number < 100) return "50-100ms";
+                if (number < 150) return "100-150ms";
+                if (number < 250) return "150-250ms";
+                if (number < 500) return "250-500ms";
+                if (number < 750) return "500-750ms";
+                if (number < 1000) return "750ms-1s";
+                if (number < 1500) return "1-1.5s";
+                if (number < 2000) return "1.5-2s";
+                if (number < 3000) return "2-3s";
+                return ">3s";
+            };
+            var v = function() {
+                // make sure defined in scope (precaution)
+                if (!q) {
+                    q = function (x, y, z) {
+                        // set cookie (name, value, expires)
+                        if (typeof z == "number") z = new Date(z);
+                        document.cookie = x + "=" + y + ";path=/;domain=" + location.hostname + ";expires=" + (z?z.toGMTString():"");
+                    };
+                }
+                // make sure performance.timing exists so we can use it
+                if (performance && performance.timing) {
+                    t = performance.timing;
+                    var c = pn + d;
+                    c += t.domComplete - t.navigationStart;
+                    q(cn,c,30*1000);
+                } else {
+                    console.log("timing stats not available");
+                }
+            };
+            
+            // insert previous page values into udo
+            var u = r(cn);
+            if (u) {
+                return {
+                    pageName: u.split(d)[0],
+                    domComplete: g(parseInt(u.split(d)[1]))
+                };
+            }
+            
+            if(window.timingDetailStart) {
+                var c = pn + d;
+                c += new Date().valueOf() - window.timingDetailStart.valueOf();
+                q(cn,c,30*1000);
+            } else {
+                // check to see if already loaded, else wait
+                (function check(tL){
+                    if (tL > 0) {
+                        if (typeof performance != "undefined" && typeof performance.timing != "undefined" && typeof performance.timing.loadEventEnd != "undefined" && performance.timing.loadEventEnd != 0)
+                            v();
+                        else
+                            setTimeout(function(){check(tL-100)},100);
+                    }
+                })(5000);
+            }
+        }
+    } catch (e) {}
+}
