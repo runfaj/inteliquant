@@ -102,6 +102,12 @@ s.trackTimingDetails = function (pn,cn,d) {
                 if (number < 3000) return "2-3s";
                 return ">3s";
             };
+            /* altername bucket method to round to nearest second*/
+            /*
+            var g = function(number) {
+               return Math.round(number/1000);
+            };
+            */
             var v = function() {
                 // make sure defined in scope (precaution)
                 if (!q) {

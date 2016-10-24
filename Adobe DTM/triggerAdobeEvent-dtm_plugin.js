@@ -6,9 +6,9 @@
 
 
 /**
- * function triggerAdobeEvent  v1.1 - 2016-08-30
+ * function triggerAdobeEvent  v1.2 - 2016-10-24
  * Used to trigger any Adobe event on various conditions and add the
- * event to the scoped s.events variable.
+ * event to the scoped s.events variable. This also updates the s.linkTrackEvents variable.
  *
  * Params:
  * eventNumber: Required. The event number or name to be triggered.
@@ -36,8 +36,8 @@
  **/
 s.triggerAdobeEvent = new Function('eventNumber', 'dataElement',
     'triggerValue', 'option', 'optionDelim', 'var s = this; function optIsTrue()'
-    +'{return !(option && option !== true && (typeof option=='
-    +'"string" && option.toLowerCase() !== "true"));}function apl'
+    +'{return option && option === true || (typeof option == "string" && option.'
+    +'toLowerCase() === "true");}function apl'
     +'(list, value, optserialize) {if(!list || list == "") list ='
     +'value; else list = list += "," + value; if(optserialize && '
     +'!optIsTrue()) list += (optionDelim ? optionDelim : "=") + optserialize; return list;}if('
@@ -46,14 +46,14 @@ s.triggerAdobeEvent = new Function('eventNumber', 'dataElement',
     +'eventNumber.toString().trim().toLowerCase(); if(temp.'
     +'indexOf("event")!=0) {if(!isNaN(temp)) {eventNumber ='
     +'"event" + eventNumber;}} if(!dataElement) { s.events = '
-    +'apl(s.events, eventNumber, option);return true;} else {'
+    +'apl(s.events, eventNumber, option);s.linkTrackEvents = apl(s.events, eventNumber);return true;} else {'
     +'var value = _satellite.getVar(dataElement) || "";if(!trigger'
     +'Value) {if(value !== "") {s.events = apl(s.events, event'
-    +'Number, option);return true;}} else {if(optIsTrue()) {'
+    +'Number, option);s.linkTrackEvents = apl(s.events, eventNumber);return true;}} else {if(optIsTrue()) {'
     +'if(value.toString() === triggerValue.toString()) {s.events'
-    +'= apl(s.events, eventNumber);return true;}} else {if(value.'
+    +'= apl(s.events, eventNumber);s.linkTrackEvents = apl(s.events, eventNumber);return true;}} else {if(value.'
     +'toString().indexOf(triggerValue.toString())>-1) {s.events '
-    +'=apl(s.events, eventNumber);return true;}}}}return false;');
+    +'=apl(s.events, eventNumber);s.linkTrackEvents = apl(s.events, eventNumber);return true;}}}}return false;');
 
 
 
@@ -65,7 +65,7 @@ s.triggerAdobeEvent = new Function('eventNumber', 'dataElement',
 function triggerAdobeEvent(eventNumber, dataElement, triggerValue, option, optionDelim) {
     var s = this;
     function optIsTrue() {
-        return !(option && option !== true && (typeof option == "string" && option.toLowerCase() !== "true"));
+        return option && option === true || (typeof option == "string" && option.toLowerCase() === "true");
     }
     function apl(list, value, optserialize) {
         if(!list || list == "") list = value;
@@ -86,23 +86,27 @@ function triggerAdobeEvent(eventNumber, dataElement, triggerValue, option, optio
 
     if(!dataElement) {
         s.events = apl(s.events, eventNumber, option);
+        s.linkTrackEvents = apl(s.events, eventNumber);
         return true;
     } else {
         var value = _satellite.getVar(dataElement) || "";
         if(!triggerValue) {
             if(value !== "") {
                 s.events = apl(s.events, eventNumber, option);
+                s.linkTrackEvents = apl(s.events, eventNumber);
                 return true;
             }
         } else {
             if(optIsTrue()) {
                 if(value.toString() === triggerValue.toString()) {
                     s.events = apl(s.events, eventNumber);
+                    s.linkTrackEvents = apl(s.events, eventNumber);
                     return true;
                 }
             } else {
                 if(value.toString().indexOf(triggerValue.toString())>-1) {
                     s.events = apl(s.events, eventNumber);
+                    s.linkTrackEvents = apl(s.events, eventNumber);
                     return true;
                 }
             }
