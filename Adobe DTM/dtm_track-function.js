@@ -77,6 +77,8 @@ window.dtm_track = function(type,obj,lookAtExisting) {
             || _satellite.readCookie('dtm_debug') == true)) {
       console.log("dtm " + hasTracked + "tracked '" + type + "'", obj);
     }
+
+    dtm_layer.dtm_event_type = type;
   
     if (hasTracked != "NOT ")
       _satellite.track(type);
