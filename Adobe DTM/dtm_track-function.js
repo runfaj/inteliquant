@@ -55,6 +55,8 @@ function dtm_clone(obj) {
 }
  
 window.dtm_layer = window.dtm_layer || {};
+if(!dtm_layer.dtm_event_type) dtm_layer.dtm_event_type = "view";
+
 window.dtm_track = function(type,obj,lookAtExisting) {
   try {
     var hasTracked = "";
