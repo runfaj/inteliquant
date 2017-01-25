@@ -46,14 +46,14 @@ s.triggerAdobeEvent = new Function('eventNumber', 'dataElement',
     +'eventNumber.toString().trim().toLowerCase(); if(temp.'
     +'indexOf("event")!=0) {if(!isNaN(temp)) {eventNumber ='
     +'"event" + eventNumber;}} if(!dataElement) { s.events = '
-    +'apl(s.events, eventNumber, option);s.linkTrackEvents = apl(s.events, eventNumber);return true;} else {'
+    +'apl(s.events, eventNumber, option);s.linkTrackEvents = apl(s.linkTrackEvents, eventNumber);return true;} else {'
     +'var value = _satellite.getVar(dataElement) || "";if(!trigger'
     +'Value) {if(value !== "") {s.events = apl(s.events, event'
-    +'Number, option);s.linkTrackEvents = apl(s.events, eventNumber);return true;}} else {if(optIsTrue()) {'
+    +'Number, option);s.linkTrackEvents = apl(s.linkTrackEvents, eventNumber);return true;}} else {if(optIsTrue()) {'
     +'if(value.toString() === triggerValue.toString()) {s.events'
-    +'= apl(s.events, eventNumber);s.linkTrackEvents = apl(s.events, eventNumber);return true;}} else {if(value.'
+    +'= apl(s.events, eventNumber);s.linkTrackEvents = apl(s.linkTrackEvents, eventNumber);return true;}} else {if(value.'
     +'toString().indexOf(triggerValue.toString())>-1) {s.events '
-    +'=apl(s.events, eventNumber);s.linkTrackEvents = apl(s.events, eventNumber);return true;}}}}return false;');
+    +'=apl(s.events, eventNumber);s.linkTrackEvents = apl(s.linkTrackEvents, eventNumber);return true;}}}}return false;');
 
 
 
