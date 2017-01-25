@@ -86,27 +86,27 @@ function triggerAdobeEvent(eventNumber, dataElement, triggerValue, option, optio
 
     if(!dataElement) {
         s.events = apl(s.events, eventNumber, option);
-        s.linkTrackEvents = apl(s.events, eventNumber);
+        s.linkTrackEvents = apl(s.linkTrackEvents, eventNumber);
         return true;
     } else {
         var value = _satellite.getVar(dataElement) || "";
         if(!triggerValue) {
             if(value !== "") {
                 s.events = apl(s.events, eventNumber, option);
-                s.linkTrackEvents = apl(s.events, eventNumber);
+                s.linkTrackEvents = apl(s.linkTrackEvents, eventNumber);
                 return true;
             }
         } else {
             if(optIsTrue()) {
                 if(value.toString() === triggerValue.toString()) {
                     s.events = apl(s.events, eventNumber);
-                    s.linkTrackEvents = apl(s.events, eventNumber);
+                    s.linkTrackEvents = apl(s.linkTrackEvents, eventNumber);
                     return true;
                 }
             } else {
                 if(value.toString().indexOf(triggerValue.toString())>-1) {
                     s.events = apl(s.events, eventNumber);
-                    s.linkTrackEvents = apl(s.events, eventNumber);
+                    s.linkTrackEvents = apl(s.linkTrackEvents, eventNumber);
                     return true;
                 }
             }
