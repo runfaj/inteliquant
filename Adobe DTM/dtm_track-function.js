@@ -64,7 +64,9 @@ window.dtm_track = function(type,obj,lookAtExisting) {
     if (typeof type == "undefined" || type == null || !type) type = "view";
   
     var temp = window.dtm_clone(window.dtm_layer);
+    var temp_cache = _satellite.dataElementSafe.pageviewCache || {};
     window.dtm_layer = obj || {};
+    _satellite.dataElementSafe.pageviewCache = {};
 
     if(lookAtExisting) {
       for(var key in temp) {
@@ -87,7 +89,9 @@ window.dtm_track = function(type,obj,lookAtExisting) {
   
     setTimeout(function(){
       window.dtm_layer = window.dtm_clone(temp);
+      _satellite.dataElementSafe.pageviewCache = window.dtm_clone(temp_cache);
       delete temp;
+      delete temp_cache;
     },300);
   } catch (e) {
     if(typeof console != "undefined" && console.log)
