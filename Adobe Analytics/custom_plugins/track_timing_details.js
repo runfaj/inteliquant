@@ -1,7 +1,7 @@
+
 //NOTE: if pageName or url has semi-colons, this will not work right now
 
 /* Usage:
-
     Use this plugin to track the previous page's time to dom ready
     as well as the page name it is associated with. There are a few
     optional parameters you can use:
@@ -13,23 +13,19 @@
                   defaults to "??"
     This plugin returns an object with two values: pageName and
     domComplete. Sample usage in s.doPlugins might look like so:
-
         var td = s.trackTimingDetails();
         if (td) {
-          s.propXX = td.pageName;
-          s.propXX2 = td.domComplete;
+          s.propXX = td.pageName; // will contain value of param 1 above
+          s.propXX2 = td.domComplete; // contains human readable timing info (e.g. 2-3s)
+          s.propXX3 = td.domCompleteRaw; // contains raw timing info (e.g. 2663)
         }
-
     In the event you have a browser that doesn't utilize the
     performance.timing browser object, you can also manually
     specify when the page starts loading. You can do so by
     putting a global variable at the top of your page like so:
-
     window.timingDetailStart = new Date();
-
     The plugin will look at this value first if specified, then
     attempt to look at performance.timing if not.
-
 */
 
 s.trackTimingDetails = new Function("a","b","c","try{var d=this;"
@@ -52,7 +48,7 @@ s.trackTimingDetails = new Function("a","b","c","try{var d=this;"
     +"nce.timing){t=performance.timing;var d=a+c;d+=t.domComplet"
     +"e-t.navigationStart,f(b,d,3e4)}else console.log('timing st"
     +"ats not available')},i=e(b);if(i)return{pageName:i.split(c"
-    +")[0],domComplete:g(parseInt(i.split(c)[1]))};if(window.timingDe"
+    +")[0],domComplete:g(parseInt(i.split(c)[1])),domCompleteRaw:parseInt(i.split(c)[1])};if(window.timingDe"
     +"tailStart){var j=a+c;j+=(new Date).valueOf()-window.timingDetai"
     +"lStart.valueOf(),f(b,j,3e4)}else!function a(b){b>0&&('unde"
     +"fined'!=typeof performance&&'undefined'!=typeof performanc"
@@ -139,7 +135,8 @@ s.trackTimingDetails = function (pn,cn,d) {
             if (u) {
                 return {
                     pageName: u.split(d)[0],
-                    domComplete: g(parseInt(u.split(d)[1]))
+                    domComplete: g(parseInt(u.split(d)[1])),
+                    domCompleteRaw: parseInt(u.split(d)[1])
                 };
             }
             
