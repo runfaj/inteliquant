@@ -15,8 +15,10 @@
     domComplete. Sample usage in s.doPlugins might look like so:
 
         var td = s.trackTimingDetails();
-        s.propXX = td.pageName;
-        s.propXX2 = td.domComplete;
+        if (td) {
+          s.propXX = td.pageName;
+          s.propXX2 = td.domComplete;
+        }
 
     In the event you have a browser that doesn't utilize the
     performance.timing browser object, you can also manually
