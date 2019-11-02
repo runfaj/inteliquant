@@ -38,13 +38,13 @@ s.trackTimingDetails = new Function("a","b","c","try{var d=this;"
     +"(var e=0;e<c.length;e++){for(d=c[e];' '==d.charAt(0);)d=d."
     +"substring(1,d.length);if(0==d.indexOf(b))return d.substrin"
     +"g(b.length,d.length)}return''},f=function(a,b,c){'number'="
-    +"=typeof c&&(c=new Date(c)),document.cookie=a+'='+b+';path="
+    +"=typeof c&&(c=new Date(new Date().valueOf() + c)),document.cookie=a+'='+b+';path="
     +"/;domain='+location.hostname+';expires='+(c?c.toGMTString("
     +"):'')},g=function(a){return a<25?'0-25ms':a<50?'25-50ms':a"
     +"<100?'50-100ms':a<150?'100-150ms':a<250?'150-250ms':a<500?"
     +"'250-500ms':a<750?'500-750ms':a<1e3?'750ms-1s':a<1500?'1-1"
     +".5s':a<2e3?'1.5-2s':a<3e3?'2-3s':'>3s'},h=function(){if(f|"
-    +"|(f=function(a,b,c){'number'==typeof c&&(c=new Date(c)),do"
+    +"|(f=function(a,b,c){'number'==typeof c&&(c=new Date(new Date().valueOf() + c)),do"
     +"cument.cookie=a+'='+b+';path=/;domain='+location.hostname+"
     +"';expires='+(c?c.toGMTString():'')}),performance&&performa"
     +"nce.timing){t=performance.timing;var d=a+c;d+=t.domComplet"
@@ -84,7 +84,9 @@ s.trackTimingDetails = function (pn,cn,d) {
             };
             var q = function (x, y, z) {
                 // set cookie (name, value, expires)
-                if (typeof z == "number") z = new Date(z);
+                if (typeof z == "number") {
+                  z = new Date(new Date().valueOf() + z);
+                }
                 document.cookie = x + "=" + y + ";path=/;domain=" + location.hostname + ";expires=" + (z?z.toGMTString():"");
             };
             var g = function(number) {
@@ -113,7 +115,9 @@ s.trackTimingDetails = function (pn,cn,d) {
                 if (!q) {
                     q = function (x, y, z) {
                         // set cookie (name, value, expires)
-                        if (typeof z == "number") z = new Date(z);
+                        if (typeof z == "number") {
+                          z = new Date(new Date().valueOf() + z);
+                        }
                         document.cookie = x + "=" + y + ";path=/;domain=" + location.hostname + ";expires=" + (z?z.toGMTString():"");
                     };
                 }
